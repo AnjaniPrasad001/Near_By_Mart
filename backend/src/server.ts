@@ -1,6 +1,7 @@
 import app from './app';
 import config from './config';
 import connectDatabase from './config/database';
+import { seedDatabase } from './config/seed';
 
 // ──────────────────────────────────────────────
 // Start server
@@ -8,6 +9,7 @@ import connectDatabase from './config/database';
 const startServer = async (): Promise<void> => {
   // Connect to MongoDB
   await connectDatabase();
+  await seedDatabase();
 
   // Start listening
   const server = app.listen(config.port, () => {

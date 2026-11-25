@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css',
 })
@@ -30,40 +32,57 @@ export class LandingComponent {
       icon: '🔍',
       title: 'Search Products',
       description: 'Find any product and discover which nearby shops carry it.',
+      route: '/explore',
     },
     {
       icon: '📍',
       title: 'Nearby Shops',
       description: 'See shops sorted by distance from your current location.',
+      route: '/shops',
     },
     {
       icon: '📞',
       title: 'Confirm Availability',
       description: 'Contact sellers directly to verify product availability.',
+      route: '/shops',
     },
     {
       icon: '🗺️',
       title: 'Get Directions',
       description: 'Navigate to the shop with one tap using Google Maps.',
+      route: '/shops',
     },
     {
       icon: '🤖',
       title: 'AI Assistant',
       description: 'Ask our AI chatbot to help you find exactly what you need.',
+      route: '/assistant',
     },
     {
       icon: '🏪',
       title: 'For Sellers',
       description: 'List your shop and products to reach more local customers.',
+      route: '/auth/register',
     },
   ];
 
   searchQuery = '';
 
+  constructor(
+    private readonly router: Router,
+    public readonly auth: AuthService,
+  ) {}
+
   onSearch(): void {
-    if (this.searchQuery.trim()) {
-      // Will navigate to search results in Phase 6
-      console.log('Search:', this.searchQuery);
-    }
+    const q = this.searchQuery.trim();
+    this.router.navigate(['/explore'], q ? { queryParams: { q } } : {});
+  }
+
+  searchTerm(term: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: term } });
+  }
+
+  browseCategory(category: string): void {
+    this.router.navigate(['/explore'], { queryParams: { category } });
   }
 }

@@ -373,6 +373,7 @@
 }
 
 .feature-card {
+  display: block;
   padding: var(--space-8);
   background: var(--color-bg-card);
   border-radius: var(--radius-xl);

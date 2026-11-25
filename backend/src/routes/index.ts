@@ -1,5 +1,9 @@
 import { Router, Request, Response } from 'express';
 import ApiResponse from '../utils/ApiResponse';
+import authRoutes from './authRoutes';
+import shopRoutes from './shopRoutes';
+import productRoutes from './productRoutes';
+import assistantRoutes from './assistantRoutes';
 
 const router = Router();
 
@@ -15,14 +19,11 @@ router.get('/health', (_req: Request, res: Response) => {
 });
 
 // ──────────────────────────────────────────────
-// Route placeholders — will be mounted in later phases
+// Feature API routes
 // ──────────────────────────────────────────────
-// router.use('/auth', authRoutes);      // Phase 3
-// router.use('/users', userRoutes);     // Phase 3
-// router.use('/shops', shopRoutes);     // Phase 4
-// router.use('/products', productRoutes); // Phase 5
-// router.use('/search', searchRoutes);  // Phase 7
-// router.use('/rag', ragRoutes);        // Phase 10
-// router.use('/analytics', analyticsRoutes); // Phase 11
+router.use('/auth', authRoutes);
+router.use('/shops', shopRoutes);
+router.use('/products', productRoutes);
+router.use('/assistant', assistantRoutes);
 
 export default router;

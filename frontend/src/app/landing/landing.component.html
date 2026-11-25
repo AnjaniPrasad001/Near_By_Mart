@@ -5,21 +5,31 @@
 <!-- ── Header ── -->
 <header class="header">
   <div class="header-inner container">
-    <a class="logo" href="/">
+    <a class="logo" routerLink="/">
       <span class="logo-icon">🛍️</span>
       <span class="logo-text">Near<span class="logo-accent">By</span>Mart</span>
     </a>
     <nav class="nav-links">
-      <a class="nav-link" href="#">Categories</a>
-      <a class="nav-link" href="#">Nearby Shops</a>
+      <a class="nav-link" routerLink="/explore">Categories</a>
+      <a class="nav-link" routerLink="/shops">Nearby Shops</a>
+      <a class="nav-link" routerLink="/assistant">AI Assistant</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-outline btn-sm" href="#">Login</a>
-      <a class="btn btn-primary btn-sm" href="#">Register</a>
+      @if (auth.isLoggedIn()) {
+        @if (auth.isSeller()) {
+          <a class="btn btn-outline btn-sm" routerLink="/seller">Dashboard</a>
+        } @else {
+          <a class="btn btn-outline btn-sm" routerLink="/explore">Browse</a>
+        }
+        <button class="btn btn-primary btn-sm" (click)="auth.logout()">Logout</button>
+      } @else {
+        <a class="btn btn-outline btn-sm" routerLink="/auth/login">Login</a>
+        <a class="btn btn-primary btn-sm" routerLink="/auth/register">Register</a>
+      }
     </div>
-    <button class="mobile-menu-btn" aria-label="Menu">
-      <span class="material-icons">menu</span>
-    </button>
+    <a class="mobile-menu-btn" routerLink="/explore" aria-label="Explore">
+      <span class="material-icons">search</span>
+    </a>
   </div>
 </header>
 
@@ -64,10 +74,10 @@
       </div>
       <div class="search-suggestions">
         <span>Popular:</span>
-        <button class="suggestion-chip">Pooja items</button>
-        <button class="suggestion-chip">Running shoes</button>
-        <button class="suggestion-chip">Rice 10kg</button>
-        <button class="suggestion-chip">Mobile charger</button>
+        <button class="suggestion-chip" (click)="searchTerm('Pooja items')">Pooja items</button>
+        <button class="suggestion-chip" (click)="searchTerm('Running shoes')">Running shoes</button>
+        <button class="suggestion-chip" (click)="searchTerm('Rice 10kg')">Rice 10kg</button>
+        <button class="suggestion-chip" (click)="searchTerm('Mobile charger')">Mobile charger</button>
       </div>
     </div>
 
@@ -105,6 +115,7 @@
           class="category-card"
           [style.--cat-color]="cat.color"
           [id]="'cat-' + cat.name.toLowerCase()"
+          (click)="browseCategory(cat.name)"
         >
           <span class="category-icon">{{ cat.icon }}</span>
           <span class="category-name">{{ cat.name }}</span>
@@ -124,11 +135,11 @@
 
     <div class="features-grid">
       @for (feature of features; track feature.title; let i = $index) {
-        <div class="feature-card" [style.animation-delay]="(i * 100) + 'ms'">
+        <a class="feature-card" [routerLink]="feature.route" [style.animation-delay]="(i * 100) + 'ms'">
           <span class="feature-icon">{{ feature.icon }}</span>
           <h3 class="feature-title">{{ feature.title }}</h3>
           <p class="feature-description">{{ feature.description }}</p>
-        </div>
+        </a>
       }
     </div>
   </div>
@@ -145,8 +156,10 @@
           customers and grow your business.
         </p>
         <div class="cta-actions">
-          <a class="btn btn-primary btn-lg" href="#">Register as Seller</a>
-          <a class="btn btn-secondary btn-lg" href="#">Learn More</a>
+          <a class="btn btn-primary btn-lg" routerLink="/auth/register" [queryParams]="{ role: 'seller' }">
+            Register as Seller
+          </a>
+          <a class="btn btn-secondary btn-lg" routerLink="/shops">Explore Shops</a>
         </div>
       </div>
       <div class="cta-illustration">
@@ -161,7 +174,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="logo" href="/">
+        <a class="logo" routerLink="/">
           <span class="logo-icon">🛍️</span>
           <span class="logo-text">Near<span class="logo-accent">By</span>Mart</span>
         </a>
@@ -172,24 +185,24 @@
       </div>
       <div class="footer-links">
         <h4>For Buyers</h4>
-        <a href="#">Search Products</a>
-        <a href="#">Nearby Shops</a>
-        <a href="#">Categories</a>
-        <a href="#">AI Assistant</a>
+        <a routerLink="/explore">Search Products</a>
+        <a routerLink="/shops">Nearby Shops</a>
+        <a routerLink="/explore">Categories</a>
+        <a routerLink="/assistant">AI Assistant</a>
       </div>
       <div class="footer-links">
         <h4>For Sellers</h4>
-        <a href="#">Register Shop</a>
-        <a href="#">Dashboard</a>
-        <a href="#">Add Products</a>
-        <a href="#">Analytics</a>
+        <a routerLink="/auth/register" [queryParams]="{ role: 'seller' }">Register Shop</a>
+        <a routerLink="/seller">Dashboard</a>
+        <a routerLink="/seller">Add Products</a>
+        <a routerLink="/auth/login">Seller Login</a>
       </div>
       <div class="footer-links">
-        <h4>Company</h4>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <h4>Account</h4>
+        <a routerLink="/auth/login">Login</a>
+        <a routerLink="/auth/register">Register</a>
+        <a routerLink="/explore">Browse Catalog</a>
+        <a routerLink="/assistant">Ask Assistant</a>
       </div>
     </div>
     <div class="footer-bottom">

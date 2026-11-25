@@ -1,0 +1,5 @@
+// ──────────────────────────────────────────────
+// Placeholder: Guards will be created in Phase 3
+// ──────────────────────────────────────────────
+// auth.guard.ts  — Protect routes requiring authentication
+// role.guard.ts  — Restrict routes by user role (buyer/seller)
